@@ -1,0 +1,29 @@
+{
+  "name": "ab_test_contest",
+  "version": "1.0.0",
+  "description": "NodeJS+React",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "server": "nodemon app.js",
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"nodemon app.js\" \"npm run client\""
+  },
+  "keywords": [
+    "node_js",
+    "react"
+  ],
+  "author": "Mikhail Koponirov <koponirov92@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "config": "^3.3.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.25",
+    "mysql2": "^2.1.0"
+  },
+  "devDependencies": {
+    "concurrently": "^5.2.0",
+    "nodemon": "^2.0.4"
+  }
+}
