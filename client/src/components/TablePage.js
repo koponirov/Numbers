@@ -1,34 +1,42 @@
-import React from 'react';
-import { useState } from 'react';
-import { useHttp } from "../hooks/http.hook";
+import React, {useState} from 'react';
+import {useHttp} from "../hooks/http.hook";
+import {Table} from "./Table";
+import s from "./Table.module.css"
+
 
 export const TablePage = () => {
-
-    const [nums,setNums] = useState([]);
-    const { loading, request } = useHttp();
+    console.log('render')
+    const [averageValues, setAverageValues] = useState([]);
+    const {loading, request} = useHttp();
 
     const fetchDataHandler = async () => {
 
-        try{
+        try {
             const data = await request('/api/table');
-            let value =
-            setNums([(data[0]).average]);
-            debugger
-            column1.push(nums.map(n => n.average))
 
-        } catch (e) {console.log(e.message)}
+            setAverageValues(data)
+
+
+        } catch (e) {
+            console.log(e.message)
+        }
     }
 
-    const column1 = [];
+    const table = averageValues.map(n => {
+        debugger
+        return <Table key={n.item} item={n.item} number={n.average_num}/>
+    });
 
     return (
-        <div>
-            <p> Table page works </p>
-            <p>{column1}</p>
-
-            <button onClick={fetchDataHandler} disabled={loading}>
-                Get request
+        <div className={s.container}>
+            <header className={s.header}> calculation of average values</header>
+            <button className={s.btn} onClick={fetchDataHandler} disabled={loading}>
+                {averageValues.length > 0 ? 'Recalculate average values' : 'Calculate average values'}
             </button>
+            <div className={s.table}>
+                <div>RESULTS</div>
+                <div>{table}</div>
+            </div>
         </div>
     )
 };

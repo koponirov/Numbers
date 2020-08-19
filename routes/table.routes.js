@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const mysql = require('mysql2');
 const router = Router();
-const pool = mysql.createPool({
+const connection = mysql.createConnection({
     connectionLimit: 5,
     host: "localhost",
     user: "root",
@@ -10,14 +10,24 @@ const pool = mysql.createPool({
 });
 
 router.get('/table',  (req, res) => {
-        const query = "SELECT AVG(column1) AS average FROM(SELECT column1 FROM random_numbers AS rand_values ORDER BY RAND() LIMIT 100) AS average_table;"
+        const sql = "CALL new_procedure1(10);"
     try{
-            pool.query(query, function(err, data) {
+        connection.query(sql, function(err, data) {
 
             if (err) return console.log(err);
-            //передаю ответ в callback res
-            res.json(data)
 
+            const sql1 = "SELECT item, average_num FROM calculated_results;"
+            connection.query(sql1, function(err, data) {
+                if (err) return console.log(err);
+                //передаю ответ в callback res
+                res.json(data);
+            })
+
+                if (err) return console.log(err);
+                const sql2 = "DELETE FROM calculated_results;"
+                connection.query(sql2, function(err, data) {
+                    if (err) return console.log(err);
+            })
         })
     } catch (e) {
         res.status(500).json({message: 'something went wrong, please try again'})
